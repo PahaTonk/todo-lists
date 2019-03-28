@@ -1,0 +1,14 @@
+.todo-app {
+  width: 400px;
+  margin: 0 auto;
+}
+.todo-panel {
+  flex-wrap: wrap;
+}
+.todo-panel > div,
+.todo-panel > ul {
+  width: 100%
+}
+.todo-panel {
+  margin: 1rem 0;
+}
