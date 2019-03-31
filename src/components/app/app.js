@@ -105,6 +105,7 @@ export default class App extends Component {
       todoData : todoData.concat(this.createTodoItem(text)),
       oldTodoData : oldTodoData.concat(this.createTodoItem(text)),
     }) );
+    this.handlerClickFilter(this.state.filterProperty);
   }
 
   render() {
