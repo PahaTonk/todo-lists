@@ -3,6 +3,7 @@ import TodoListItem from './../todo-list-item';
 import './todo-list.css';
 
 const TodoList = ({ todos, onDeleted, onToggleImportant, onToggleDone }) => {
+  // const filterTodos = todos.filter();
   return (
     <ul className="list-group todo-list">
     {todos.map( (item, i) => {
