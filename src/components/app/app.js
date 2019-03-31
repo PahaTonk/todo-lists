@@ -20,42 +20,47 @@ export default class App extends Component {
 
   componentWillMount() {
     this.setState( ({ todoData }) => ({
-      oldTodoData : todoData,
+      oldTodoData : [...todoData],
     }) );
   };
 
  // function Component SearchPanel
 
   handlerChangeSearch = (label) => {
-    let reg = new RegExp(`\\b${label}`, 'i');
+    let reg = new RegExp(`${label}`, 'i');
     this.setState( ({ oldTodoData }) => ({
-      todoData : oldTodoData.filter( (item) => item.label.search(reg) !== -1 )
+      todoData : oldTodoData.filter( (item) => item.label.search(reg) !== -1 ),
+      searchLabel : label,
     }) );
+    if (this.state.filterProperty !== 'ALL') {
+      this.handlerClickFilter(this.state.filterProperty);
+    }
   };
 
   handlerClickFilter = (property) => {
     switch (property) {
       case 'ALL' :
-        this.setState( ({ oldTodoData }) => ({
-          todoData : oldTodoData,
+        this.setState( ({ oldTodoData, searchLabel }) => ({
+          todoData : oldTodoData.filter( (item) => item.label.search(new RegExp(`${searchLabel}`, 'i')) !== -1 ),
           filterProperty : 'ALL',
         }) ); break;
       case 'ACTIVE' :
-        this.setState( ({ oldTodoData }) => ({
-          todoData : oldTodoData.filter( (item) => !item.done ),
+        this.setState( ({ oldTodoData, searchLabel }) => ({
+          todoData : oldTodoData.filter( (item) => !item.done && item.label.search(new RegExp(`${searchLabel}`, 'i')) !== -1 ),
           filterProperty : 'ACTIVE',
         }) ); break;
       case 'DONE' :
-        this.setState( ({ oldTodoData }) => ({
-          todoData : oldTodoData.filter( (item) => item.done ),
+        this.setState( ({ oldTodoData, searchLabel }) => ({
+          todoData : oldTodoData.filter( (item) => item.done && item.label.search(new RegExp(`${searchLabel}`, 'i')) !== -1 ),
           filterProperty : 'DONE',
         }) ); break;
       default :
-        this.setState( ({ oldTodoData }) => ({
-          todoData : oldTodoData,
+        this.setState( ({ oldTodoData, searchLabel }) => ({
+          todoData : oldTodoData.filter( (item) => item.label.search(new RegExp(`${searchLabel}`, 'i')) !== -1 ),
+          filterProperty : 'ALL',
         }) );
-    }
-  }
+    };
+  };
 
  // function Component TodoList
   createTodoItem(label) {
@@ -72,26 +77,26 @@ export default class App extends Component {
       todoData : todoData.filter( (item) => item.key !== key ),
       oldTodoData : oldTodoData.filter( (item) => item.key !== key ),
     }) );
-  }
+  };
 
   toggleProperty(arr, key, propName) {
       let arrItems = [...this.state[arr]];
       arrItems.map( (item) => item.key === key ? item[propName] = !item[propName] : false );
       return arrItems;
-  }
+  };
 
   handlerToggleImportant = (key) => {
     this.setState( ({ todoData }) => ({
       todoData : this.toggleProperty('todoData', key, 'important'),
     }) );
-  }
+  };
 
   handlerToggleDone = (key) => {
     this.setState( ({ todoData, }) => ({
       todoData : this.toggleProperty('todoData', key, 'done'),
     }) );
     this.handlerClickFilter(this.state.filterProperty);
-  }
+  };
 
   // function Component ItemAddForm
 
